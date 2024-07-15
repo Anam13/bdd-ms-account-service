@@ -91,14 +91,6 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.codehaus.sonar-plugins.java/sonar-java-plugin -->
-<dependency>
-    <groupId>org.codehaus.sonar-plugins.java</groupId>
-    <artifactId>sonar-java-plugin</artifactId>
-    <version>3.2</version>
-    <scope>provided</scope>
-</dependency>
-
 	</dependencies>
 
 	<build>

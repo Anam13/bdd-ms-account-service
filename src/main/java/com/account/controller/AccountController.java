@@ -51,7 +51,7 @@ public class AccountController {
 
 	public ResponseEntity<AccountDTO> updateAccount(@PathVariable(required = true)Long id, @Valid @RequestBody AccountDTO accountDTO)
 			throws Exception {		
-		return new ResponseEntity<>(accountService.updateAccount(accountDTO,id), HttpStatus.CREATED);
+		return new ResponseEntity<>(accountService.updateAccount(accountDTO,id), HttpStatus.OK);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class AccountController {
 
 		Pageable paging = PageRequest.of(page, pageSize);
 		List<AccountDTO> accountsDTO = accountService.getAllAccounts(paging);
-		return new ResponseEntity<>(accountsDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(accountsDTO, HttpStatus.OK);
 	}
 
 	/**

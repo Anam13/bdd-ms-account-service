@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,10 +53,10 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		logger.info("configure () called");
-		http.csrf(csrf -> csrf.disable())
+		http.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(
 						req -> req.requestMatchers("/api/login","/swagger-ui/**", "/swagger-ui.html","/swagger-ui/index.html/**",
-								"/v3/api-docs/**", "/webjars/**").permitAll().anyRequest().authenticated())
+								"/v3/api-docs/**", "/webjars/**","/public/**").permitAll().anyRequest().authenticated())
 				.httpBasic(withDefaults()).userDetailsService(userDetailsServiceImp)
 				.exceptionHandling(entrypoint -> entrypoint.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

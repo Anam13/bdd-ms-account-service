@@ -1,7 +1,6 @@
 package com.account.service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -28,15 +27,12 @@ public class AccountService {
 	private AccountRepository accountRepository;
 
 	public AccountDTO saveAccount(AccountDTO accountDTO) {
-		//accountDTO.setCreatedDate();
 		Account account = new Account.Builder().setAccountName(accountDTO.getAccountName())
 				.setAccountNumber(accountDTO.getAccountNumber())
 				.setCreatedDate(LocalDateTime.now())
 				.setUpdatedDate(LocalDateTime.now())
 				.setBalance(accountDTO.getBalance()).build();
-
 		return mapToAccountDTO(accountRepository.save(account));
-
 	}
 
 	public AccountDTO updateAccount(AccountDTO accountDTO, Long id) {
