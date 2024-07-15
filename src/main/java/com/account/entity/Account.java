@@ -39,18 +39,14 @@ public class Account {
 	private BigDecimal balance;
 	
 	
-	//@CreatedDate
 	private LocalDateTime createdDate;
 
-	//@LastModifiedDate
 	private LocalDateTime updatedDate;
-	  // Automatically update createdDateTime before persisting (saving) the entity
     @PrePersist
     protected void onCreate() {
     	createdDate = LocalDateTime.now();
     }
 
-    // Automatically update createdDateTime before updating the entity
     @PreUpdate
     protected void onUpdate() {
     	updatedDate = LocalDateTime.now();

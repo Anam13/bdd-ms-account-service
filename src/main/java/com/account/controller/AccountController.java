@@ -26,7 +26,7 @@ public class AccountController {
 	 */
 
 	@Autowired
-	AccountService accountService;
+	private AccountService accountService;
 
 	/**
 	 * @param accountDTO

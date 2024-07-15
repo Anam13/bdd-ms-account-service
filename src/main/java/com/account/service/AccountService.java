@@ -25,7 +25,7 @@ import jakarta.transaction.Transactional;
 public class AccountService {
 
 	@Autowired
-	AccountRepository accountRepository;
+	private AccountRepository accountRepository;
 
 	public AccountDTO saveAccount(AccountDTO accountDTO) {
 		//accountDTO.setCreatedDate();
