@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.account.exception.ApiErrorException;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,13 +77,8 @@ public class AuthTokenUtil implements Serializable {
 
     public String extractTokenFromRequest(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(ApplicationConstants.AUTHORIZATION);
-        if (!request.getRequestURI().endsWith("/login")) {
-            if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(ApplicationConstants.BEARER)) {
-                return authorizationHeader.substring(7);
-            } else {
-                log.error("JWT Token does not begin with Bearer String");
-                throw new ApiErrorException(401, "unauthorized", "JWT Token does not begin with Bearer ");
-            }
+        if (!request.getRequestURI().contains("login") && StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(ApplicationConstants.BEARER)) {
+            return authorizationHeader.substring(7);
         }
         return null;
     }
