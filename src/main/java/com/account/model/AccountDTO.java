@@ -1,141 +1,91 @@
 package com.account.model;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
-@Data
+@Setter
+@Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class AccountDTO {
 
-	private Long id;
+    private Long id;
 
-	@NotBlank(message ="must not be blank" )
-	private String accountNumber;
-	@NotBlank(message ="must not be blank" )
-	private String accountName;	
-	@NotNull(message ="must not be null" )
-	private BigDecimal balance;
-	
-	private LocalDateTime createdDate;
+    @NotBlank(message = "must not be blank")
+    private String accountNumber;
+    @NotBlank(message = "must not be blank")
+    private String accountName;
+    @NotNull(message = "must not be null")
+    private BigDecimal balance;
 
-	private LocalDateTime updatedDate;
+    private LocalDateTime createdDate;
 
-	private AccountDTO() {
-	}
+    private LocalDateTime updatedDate;
 
-	public Long getId() {
-		return id;
-	}
+    public static class Builder {
 
-	public String getAccountNumber() {
-		return accountNumber;
-	}
+        private Long id;
 
-	public String getAccountName() {
-		return accountName;
-	}
+        private String accountNumber;
 
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
+        private String accountName;
 
-	public BigDecimal getBalance() {
-		return balance;
-	}
+        private LocalDateTime createdDate;
 
-	public LocalDateTime getUpdatedDate() {
-		return updatedDate;
-	}
+        private BigDecimal balance;
 
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
+        private LocalDateTime updatedDate;
 
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
+        public Builder() {
+        }
 
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
 
-	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
-	}
-
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public void setUpdatedDate(LocalDateTime updatedDate) {
-		this.updatedDate = updatedDate;
-	}
+        public Builder setAccountNumber(String accountNumber) {
+            this.accountNumber = accountNumber;
+            return this;
+        }
 
 
-	public static class Builder {
+        public Builder setAccountName(String accountName) {
+            this.accountName = accountName;
+            return this;
+        }
 
-		private Long id;
+        public Builder setCreatedDate(LocalDateTime createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
 
-		private String accountNumber;
+        public Builder setBalance(BigDecimal balance) {
+            this.balance = balance;
+            return this;
+        }
 
-		private String accountName;
+        public Builder setUpdatedDate(LocalDateTime updatedDate) {
+            this.updatedDate = updatedDate;
+            return this;
+        }
 
-		private LocalDateTime createdDate;
-
-		private BigDecimal balance;
-
-		private LocalDateTime updatedDate;
-
-		public Builder() {
-		}
-
-		public Builder setId(Long id) {
-			this.id = id;
-			return this;
-		}
-
-		public Builder setAccountNumber(String accountNumber) {
-			this.accountNumber = accountNumber;
-			return this;
-		}
-
-
-		public Builder setAccountName(String accountName) {
-			this.accountName = accountName;
-			return this;
-		}
-
-		public Builder setCreatedDate(LocalDateTime createdDate) {
-			this.createdDate = createdDate;
-			return this;
-		}
-
-		public Builder setBalance(BigDecimal balance) {
-			this.balance = balance;
-			return this;
-		}
-
-		public Builder setUpdatedDate(LocalDateTime updatedDate) {
-			this.updatedDate = updatedDate;
-			return this;
-		}
-
-		public AccountDTO build() {
-			AccountDTO accountDTO = new AccountDTO();
-			accountDTO.id = this.id;
-			accountDTO.accountNumber = this.accountNumber;
-			accountDTO.accountName = this.accountName;
-			accountDTO.balance = this.balance;
-			accountDTO.createdDate = this.createdDate;
-			accountDTO.updatedDate = this.updatedDate;
-			return accountDTO;
-		}
-	}
+        public AccountDTO build() {
+            AccountDTO accountDTO = new AccountDTO();
+            accountDTO.id = this.id;
+            accountDTO.accountNumber = this.accountNumber;
+            accountDTO.accountName = this.accountName;
+            accountDTO.balance = this.balance;
+            accountDTO.createdDate = this.createdDate;
+            accountDTO.updatedDate = this.updatedDate;
+            return accountDTO;
+        }
+    }
 }

@@ -1,8 +1,6 @@
 package com.account.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,12 +13,10 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
+@Setter
+@Getter
 @Entity
 @Table(name = "account")
-@Data
 @Builder
 @AllArgsConstructor
 public class Account {
@@ -55,57 +51,8 @@ public class Account {
 	private Account() {
 	}
 
-	public Long getId() {
-		return id;
-	}
 
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	public String getAccountName() {
-		return accountName;
-	}
-
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	public BigDecimal getBalance() {
-		return balance;
-	}
-
-	public LocalDateTime getUpdatedDate() {
-		return updatedDate;
-	}
-	
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
-	}
-
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public void setUpdatedDate(LocalDateTime updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
-
-	public static class Builder {
+    public static class Builder {
 
 		private Long id;
 

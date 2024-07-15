@@ -1,32 +1,18 @@
 package com.account.exception;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ApiErrorResponse {
 	
 	private int status;
     private String errorCode;
     private String errorMessage;
-    
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	public String getErrorCode() {
-		return errorCode;
-	}
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-	
-	public ApiErrorResponse() {
+
+    public ApiErrorResponse() {
 	}
 	public ApiErrorResponse(int status, String errorCode, String errorMessage) {
 		super();

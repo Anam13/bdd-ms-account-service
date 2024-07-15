@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class InMemoryTokenBlacklist implements TokenBlacklist {
-    private Set<String> blacklist = new HashSet<>();
+
+    private final Set<String> blacklist = new HashSet<>();
 
     @Override
     public void addToBlacklist(String token) {

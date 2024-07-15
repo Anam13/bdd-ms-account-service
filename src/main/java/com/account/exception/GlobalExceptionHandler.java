@@ -1,7 +1,5 @@
 package com.account.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,32 +13,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
-	Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    @ExceptionHandler(ApiErrorException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiErrorException(ApiErrorException ex, WebRequest request) {
+        log.error("GlobalExceptionHandler : ApiErrorException ()");
 
-	@ExceptionHandler(ApiErrorException.class)
-	public ResponseEntity<ApiErrorResponse> handleApiErrorException(ApiErrorException ex, WebRequest request) {
-		log.error("GlobalExceptionHandler : ApiErrorException ()");		
+        ApiErrorResponse errorResponse = new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getErrorCode(),
+                ex.getErrorMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
-		ApiErrorResponse errorResponse = new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getErrorCode(),
-				ex.getErrorMessage());
-		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiErrorException(MethodArgumentNotValidException ex, WebRequest request) {
+        log.error("GlobalExceptionHandler : MethodArgumentNotValidException ()");
+        ApiErrorResponse errorResponse = new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                ex.getTitleMessageCode(),
+                ex.getTitleMessageCode());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ApiErrorResponse> handleApiErrorException(MethodArgumentNotValidException ex, WebRequest request) {
-		log.error("GlobalExceptionHandler : MethodArgumentNotValidException ()");		
-		ApiErrorResponse errorResponse = new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(), 
-				ex.getTitleMessageCode(),
-				ex.getTitleMessageCode());
-		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleGlobalExceptions(Exception ex, WebRequest request) {
+        log.error("GlobalExceptionHandler : Exception ()");
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> handleGlobalExceptions(Exception ex, WebRequest request) {
-		log.error("GlobalExceptionHandler : Exception ()");	
-
-		ApiErrorResponse errorDetails = new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(),
-				request.getDescription(false));
-		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+        ApiErrorResponse errorDetails = new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

@@ -1,8 +1,8 @@
 package com.account.controller;
 
 import com.account.model.AuthRequest;
-import com.account.service.AuthTokenUtil;
-import com.account.service.UserDetailsServiceImpl;
+import com.account.service.filter.AuthTokenUtil;
+import com.account.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,6 +35,7 @@ public class AuthenticationControllerTest {
     private UserDetailsServiceImpl userDetailsService;
     @InjectMocks
     private AuthenticationController authenticationController;
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -45,7 +46,7 @@ public class AuthenticationControllerTest {
         String username = "user";
         String password = "password";
         AuthRequest authRequest = new AuthRequest(username, password);
-        UserDetails userDetails = new User(username,password,new ArrayList<>());
+        UserDetails userDetails = new User(username, password, new ArrayList<>());
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
         when(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -60,7 +61,7 @@ public class AuthenticationControllerTest {
         String bearerToken = authTokenUtil.generateToken(new User("user", "password", new ArrayList<>()));
         mockMvc.perform(MockMvcRequestBuilders.post("/api/logout")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer "+bearerToken))
+                        .header("Authorization", "Bearer " + bearerToken))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User logged out successfully"));
     }

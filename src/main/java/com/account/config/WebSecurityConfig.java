@@ -2,9 +2,6 @@ package com.account.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.account.service.AuthRequestFilter;
-import com.account.service.JwtAuthenticationEntryPoint;
-import com.account.service.UserDetailsServiceImpl;
+import com.account.service.filter.AuthRequestFilter;
+import com.account.service.filter.JwtAuthenticationEntryPoint;
+import com.account.service.impl.UserDetailsServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,40 +26,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebSecurityConfig {
 
-	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-	@Autowired
-	private AuthRequestFilter authRequestFilter;
+    private final AuthRequestFilter authRequestFilter;
 
-	@Autowired
-	private UserDetailsServiceImpl userDetailsServiceImp;
+    private final UserDetailsServiceImpl userDetailsServiceImp;
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
+    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, AuthRequestFilter authRequestFilter, UserDetailsServiceImpl userDetailsServiceImp) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.authRequestFilter = authRequestFilter;
+        this.userDetailsServiceImp = userDetailsServiceImp;
+    }
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        log.info("configure () called");
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(
+                        req -> req.requestMatchers("/api/login", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui/index.html/**",
+                                "/v3/api-docs/**", "/webjars/**", "/public/**").permitAll().anyRequest().authenticated())
+                .httpBasic(withDefaults()).userDetailsService(userDetailsServiceImp)
+                .exceptionHandling(entrypoint -> entrypoint.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-	@Bean
-	AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-		return http.getSharedObject(AuthenticationManagerBuilder.class).build();
-	}
+        http.addFilterBefore(authRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 
-	@Bean
-	SecurityFilterChain configure(HttpSecurity http) throws Exception {
-		logger.info("configure () called");
-		http.csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(
-						req -> req.requestMatchers("/api/login","/swagger-ui/**", "/swagger-ui.html","/swagger-ui/index.html/**",
-								"/v3/api-docs/**", "/webjars/**","/public/**").permitAll().anyRequest().authenticated())
-				.httpBasic(withDefaults()).userDetailsService(userDetailsServiceImp)
-				.exceptionHandling(entrypoint -> entrypoint.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-		http.addFilterBefore(authRequestFilter, UsernamePasswordAuthenticationFilter.class);
-		return http.build();
-	}
+    @Bean
+    AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+    }
 
 }

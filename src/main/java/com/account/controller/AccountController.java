@@ -6,6 +6,7 @@ import com.account.service.AccountService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,23 +20,24 @@ import java.util.List;
 @RestController
 @SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/accounts")
-
+@Slf4j
 public class AccountController {
-	/**
-	 * 
-	 */
 
-	@Autowired
-	private AccountService accountService;
+	private final AccountService accountService;
 
-	/**
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    /**
 	 * @param accountDTO
 	 * @return
 	 * @throws Exception
 	 */
 
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<AccountDTO> createAccount(@Valid @RequestBody AccountDTO accountDTO) throws Exception {		
+	public ResponseEntity<AccountDTO> createAccount(@Valid @RequestBody AccountDTO accountDTO) throws Exception {
+		log.info("In AccountController : createAccount()");
 		return new ResponseEntity<>(accountService.saveAccount(accountDTO), HttpStatus.CREATED);
 	}
 

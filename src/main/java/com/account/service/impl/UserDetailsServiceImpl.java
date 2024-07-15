@@ -1,4 +1,4 @@
-package com.account.service;
+package com.account.service.impl;
 
 import java.util.ArrayList;
 
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	private String encryptPassword(String plainPassword) {
-		return new BCryptPasswordEncoder().encode(plainPassword);
+	private String encryptPassword() {
+		return new BCryptPasswordEncoder().encode("password");
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		if (username.equals("user")) {
-			return new User("user", encryptPassword("password"), new ArrayList<>());
+			return new User("user", encryptPassword(), new ArrayList<>());
 		}
 		throw new UsernameNotFoundException("User not found with username: " + username);
 	}
