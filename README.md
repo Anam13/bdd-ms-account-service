@@ -1,7 +1,9 @@
 # bdd-ms-account-service
 Demo spring boot project for account Service 
+
 #Login - Post
 Url : http://localhost:9090/api/login
+
 username:user 
 password:password
 
