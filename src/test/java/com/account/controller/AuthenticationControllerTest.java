@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthenticationControllerTest {
+class AuthenticationControllerTest {
 
     @Mock
     private AuthenticationManager authenticationManager;
@@ -42,7 +42,7 @@ public class AuthenticationControllerTest {
     private AuthTokenUtil authTokenUtil;
 
     @Test
-    public void testCreateAuthenticationToken() throws Exception {
+    void testCreateAuthenticationToken() throws Exception {
         String username = "user";
         String password = "password";
         AuthRequest authRequest = new AuthRequest(username, password);
@@ -57,7 +57,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void testLogout() throws Exception {
+    void testLogout() throws Exception {
         String bearerToken = authTokenUtil.generateToken(new User("user", "password", new ArrayList<>()));
         mockMvc.perform(MockMvcRequestBuilders.post("/api/logout")
                         .contentType(MediaType.APPLICATION_JSON)

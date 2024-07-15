@@ -2,6 +2,7 @@ package com.account.controller;
 
 import java.util.Objects;
 
+import com.account.exception.ApiErrorException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -45,7 +46,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest)
+    public ResponseEntity<AuthResponse> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest)
             throws Exception {
         log.info("AuthenticationController :: createAuthenticationToken()");
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -69,13 +70,12 @@ public class AuthenticationController {
         Objects.requireNonNull(username);
         Objects.requireNonNull(password);
         try {
-            log.info("authenticate user");
-
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            log.info("authenticated user");
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new ApiErrorException(401, "USER_DISABLED", "USER_DISABLED");
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new ApiErrorException(401, "INVALID_CREDENTIALS", "INVALID_CREDENTIALS");
         }
     }
 }

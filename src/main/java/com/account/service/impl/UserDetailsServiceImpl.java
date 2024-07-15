@@ -12,14 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	private String encryptPassword() {
-		return new BCryptPasswordEncoder().encode("password");
-	}
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		if (username.equals("user")) {
-			return new User("user", encryptPassword(), new ArrayList<>());
+			return new User("user", new BCryptPasswordEncoder().encode("password"), new ArrayList<>());
 		}
 		throw new UsernameNotFoundException("User not found with username: " + username);
 	}

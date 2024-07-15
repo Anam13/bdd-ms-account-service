@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGlobalExceptions(Exception ex, WebRequest request) {
+    public ResponseEntity<ApiErrorResponse> handleGlobalExceptions(Exception ex, WebRequest request) {
         log.error("GlobalExceptionHandler : Exception ()");
 
         ApiErrorResponse errorDetails = new ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(),

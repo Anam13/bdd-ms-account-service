@@ -67,6 +67,7 @@ public class Account {
 		private LocalDateTime updatedDate;
 
 		public Builder() {
+			//Builder()
 		}
 
 		public Builder setId(Long id) {
@@ -79,8 +80,8 @@ public class Account {
 			return this;
 		}
 
-		public Builder setAccountName(String accountname) {
-			this.accountname = accountname;
+		public Builder setAccountName(String accountName) {
+			this.accountname = accountName;
 			return this;
 		}
 

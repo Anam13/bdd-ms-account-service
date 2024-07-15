@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -31,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AccountControllerTest {
+class AccountControllerTest {
 
     @Mock
     private AccountService accountService;
@@ -50,7 +49,7 @@ public class AccountControllerTest {
     private String bearerToken;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         // Initialize test data
         inputAccountDTO = new AccountDTO.Builder()
@@ -68,17 +67,16 @@ public class AccountControllerTest {
                 .build();
 
         objectMapper = new ObjectMapper();
-        bearerToken = authTokenUtil.generateToken(new User("user", "password", new ArrayList<>()));
+        bearerToken = "Bearer " + authTokenUtil.generateToken(new User("user", "password", new ArrayList<>()));
     }
 
 
     @Test
-    @WithMockUser(username = "user", password = "password")
-    public void testCreateAccount() throws Exception {
+    void testCreateAccount() throws Exception {
         when(accountService.saveAccount(any(AccountDTO.class))).thenReturn(accountDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts")
-                        .header("Authorization", "Bearer " + bearerToken)
+                        .header("Authorization", bearerToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(inputAccountDTO)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -87,10 +85,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testUpdateAccount() throws Exception {
+    void testUpdateAccount() throws Exception {
         when(accountService.updateAccount(any(AccountDTO.class), any(Long.class))).thenReturn(accountDTO);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/{id}", inputAccountDTO.getId())
-                        .header("Authorization", "Bearer " + bearerToken)
+                        .header("Authorization", bearerToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(inputAccountDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -99,7 +97,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testGetAccounts() throws Exception {
+    void testGetAccounts() throws Exception {
         int page = 0;
         int size = 2;
 
@@ -107,14 +105,14 @@ public class AccountControllerTest {
         when(accountService.getAllAccounts(PageRequest.of(page, size)))
                 .thenReturn(li);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")
-                        .header("Authorization", "Bearer " + bearerToken)
+                        .header("Authorization", bearerToken)
                         .param("pageSize", String.valueOf(size))
                         .param("page", String.valueOf(page)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    public void testGetAccountsByAccountNumber() throws Exception {
+    void testGetAccountsByAccountNumber() throws Exception {
         String accountNumber = "1234567890";
         Account account = new Account.Builder().setAccountName("Test Account")
                 .setAccountNumber("1234567890")
@@ -126,10 +124,10 @@ public class AccountControllerTest {
         when(accountService.getAccountByAccountNumber(accountNumber))
                 .thenReturn(accounts);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/account")
-                        .header("Authorization", "Bearer " + bearerToken)
+                        .header("Authorization", bearerToken)
                         .param("accountNumber", accountNumber))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].accountNumber").value(inputAccountDTO.getAccountNumber()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].accountName").value(inputAccountDTO.getAccountName()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].accountNumber").value(account.getAccountNumber()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].accountName").value(account.getAccountName()));
     }
 }

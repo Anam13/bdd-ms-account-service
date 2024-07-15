@@ -44,6 +44,7 @@ public class AccountDTO {
         private LocalDateTime updatedDate;
 
         public Builder() {
+            //Builder
         }
 
         public Builder setId(Long id) {

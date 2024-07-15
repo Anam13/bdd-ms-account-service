@@ -1,6 +1,10 @@
 package com.account.constant;
 
-public final class ErrorConstants {
+public class ErrorConstants {
+
+	private ErrorConstants() {
+		//default constructor
+	}
 
 	public static final String ACCOUNT_NOT_FOUND_ACC_NUMBER = "Account Details not found for account number : ";
 	public static final String ACCOUNT_NAME_NOT_FOUND_ACC_NAME = "Account Details not found for account name : ";
