@@ -14,4 +14,6 @@ http://localhost:9090/api/logout
 Header : Authorization:Bearer login_token
 
 Docker Hub : https://hub.docker.com/r/anamika1303/bdd-ms-account-service
+#docker pull anamika1303/bdd-ms-account-service:latest
+#docker run -p 9090:9090 anamika1303/bdd-ms-account-service:latest
 

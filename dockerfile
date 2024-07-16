@@ -5,6 +5,6 @@ CMD ["java", "-jar", "app.jar"]
 #docker build -t bdd-ms-account-service .
 #docker run -p 9090:9090 bdd-ms-account-service
 # docker tag <local_image>:<tag> <username>/<repository>:<tag>
-# docker tag bdd-ms-account-service:latest anamika1303/bdd-ms-account-service:latest#
+# docker tag bdd-ms-account-service:latest anamika1303/bdd-ms-account-service:latest
 # docker push anamika1303/bdd-ms-account-service:latest
 #docker pull anamika1303/bdd-ms-account-service
